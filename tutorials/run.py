@@ -30,7 +30,7 @@ programs = {
     'all_avg': ('mpi-scatter-gather-and-allgather', 4, ['100']),
 
     # From the performing-parallel-rank-with-mpi tutorial
-    'random_rank': ('performing-parallel-rank-with-mpi', 4, ['100']),
+    'random_rank': ('performing-parallel-rank-with-mpi', 2, ['100']),
 
     # From the mpi-reduce-and-allreduce tutorial
     'reduce_avg': ('mpi-reduce-and-allreduce', 4, ['100']),

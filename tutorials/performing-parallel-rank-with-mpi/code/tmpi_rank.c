@@ -23,6 +23,9 @@ typedef struct {
 
 // Gathers numbers for TMPI_Rank to process zero. Allocates enough space given the MPI datatype and
 // returns a void * buffer to process 0. It returns NULL to all other processes.
+// 为进程0的TMPI_Rank手机数字。为MPI的数据类型分配空间
+// 对进程0还回void* 指向的缓冲区
+// 对其他进程还回0
 void *gather_numbers_to_root(void *number, MPI_Datatype datatype, MPI_Comm comm) {
   int comm_rank, comm_size;
   MPI_Comm_rank(comm, &comm_rank);
