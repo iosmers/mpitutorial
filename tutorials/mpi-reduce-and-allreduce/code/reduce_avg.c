@@ -7,6 +7,7 @@
 // Program that computes the average of an array of elements in parallel using
 // MPI_Reduce.
 //
+// 使用MPI做通信，分布式计算均值
 #include <stdio.h>
 #include <stdlib.h>
 #include <mpi.h>
@@ -60,7 +61,7 @@ int main(int argc, char** argv) {
   MPI_Reduce(&local_sum, &global_sum, 1, MPI_FLOAT, MPI_SUM, 0,
              MPI_COMM_WORLD);
 
-  // Print the result
+  // 只会将结果规约到根进程，也就是0号进程
   if (world_rank == 0) {
     printf("Total sum = %f, avg = %f\n", global_sum,
            global_sum / (world_size * num_elements_per_proc));

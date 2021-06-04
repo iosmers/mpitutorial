@@ -47,6 +47,7 @@ void initialize_walkers(int num_walkers_per_proc, int max_walk_size,
       (rand() / (float)RAND_MAX) * max_walk_size;
     incoming_walkers->push_back(walker);
   }
+  // std::cout << "walker.location = "<< walker.location << " num_steps_left_in_walk = " << walker.num_steps_left_in_walk << std::endl;
 }
 
 void walk(Walker* walker, int subdomain_start, int subdomain_size,
@@ -136,29 +137,37 @@ int main(int argc, char** argv) {
   // complete all walkers
   int maximum_sends_recvs = max_walk_size / (domain_size / world_size) + 1;
   for (int m = 0; m < maximum_sends_recvs; m++) {
+    // 所有的walker都游走到了边界
     // Process all incoming walkers
-    for (int i = 0; i < incoming_walkers.size(); i++) {
+    for (int i = 0; i < incoming_walkers.size(); i++) 
+    {
        walk(&incoming_walkers[i], subdomain_start, subdomain_size,
             domain_size, &outgoing_walkers);
     }
     cout << "Process " << world_rank << " sending " << outgoing_walkers.size()
          << " outgoing walkers to process " << (world_rank + 1) % world_size
          << endl;
-    if (world_rank % 2 == 0) {
-      // Send all outgoing walkers to the next process.
-      send_outgoing_walkers(&outgoing_walkers, world_rank,
+    
+    send_outgoing_walkers(&outgoing_walkers, world_rank,
                             world_size);
       // Receive all the new incoming walkers
-      receive_incoming_walkers(&incoming_walkers, world_rank,
+    receive_incoming_walkers(&incoming_walkers, world_rank,
                                world_size);
-    } else {
-      // Receive all the new incoming walkers
-      receive_incoming_walkers(&incoming_walkers, world_rank,
-                               world_size);
-      // Send all outgoing walkers to the next process.
-      send_outgoing_walkers(&outgoing_walkers, world_rank,
-                            world_size);
-    }
+    // if (world_rank % 2 == 0) {
+    //   // Send all outgoing walkers to the next process.
+    //   send_outgoing_walkers(&outgoing_walkers, world_rank,
+    //                         world_size);
+    //   // Receive all the new incoming walkers
+    //   receive_incoming_walkers(&incoming_walkers, world_rank,
+    //                            world_size);
+    // } else {
+    //   // Receive all the new incoming walkers
+    //   receive_incoming_walkers(&incoming_walkers, world_rank,
+    //                            world_size);
+    //   // Send all outgoing walkers to the next process.
+    //   send_outgoing_walkers(&outgoing_walkers, world_rank,
+    //                         world_size);
+    // }
     cout << "Process " << world_rank << " received " << incoming_walkers.size()
          << " incoming walkers" << endl;
   }

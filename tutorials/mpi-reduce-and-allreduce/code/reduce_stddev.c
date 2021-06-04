@@ -13,6 +13,7 @@
 #include <math.h>
 #include <assert.h>
 
+// 分布式计算标准差
 // Creates an array of random numbers. Each number has a value from 0 - 1
 float *create_rand_nums(int num_elements) {
   float *rand_nums = (float *)malloc(sizeof(float) * num_elements);
